@@ -1,3 +1,5 @@
+
+
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -8,6 +10,8 @@
     <meta name="author" content="Cordeilla Sharpe">
     <meta name="generator" content="Jekyll v4.1.1">
     <title>Inventory Manager</title>
+
+
 
   <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="{% static 'inv/css/bootstrap.min.css' %}">
@@ -25,6 +29,13 @@
 <link rel="stylesheet" href="{% static 'inv/css/navbar.css' %}">
 
 <link rel="stylesheet" href="{% static 'inv/css/card.css' %}">
+
+<link rel="stylesheet" href="{% static 'inv/css/bootstrap-grid.css' %}">
+<link rel="stylesheet" href="{% static 'inv/css/bootstrap-reboot.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'inv/css/dataTables.bootstrap4.min.css' %}"/>
+<link rel="stylesheet" href="{% static 'inv/css/Chart.css' %}"/>
+
+
 
     <style>
       .bd-placeholder-img {
@@ -48,7 +59,9 @@
   <body>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+  data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+  aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
@@ -92,20 +105,34 @@
 <footer class="container">
   <p>&copy; Shire of ________ 2020</p>
 </footer>
+
+
+
+<script type="text/javascript" src="{% static 'inv/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'inv/js/Chart.bundle.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'inv/js/popper.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'inv/js/feather.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'inv/js/bootstrap.bundle.js' %}"></script>
+<script type="text/javascript" src="{% static 'inv/js/datatables.min.js' %}"></script>
+
+
+
+
+<!-- custom js scripts -->
+<script type="module" src="{% static 'inv/js/index.js' %}"></script>
+
+
+
 <script>
   function hiderows() {
     var panels = document.getElementsByClassName("full");
     for(var i = 0; i < panels.length; i++) {
       var panel = panels[i];
       if( panel.style.display == 'none') {
-        panel.style.display = ''; } 
+        panel.style.display = ''; }
       else { panel.style.display = 'none';}
     }
   }
-
 </script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-      <script>window.jQuery || document.write('<script
-        src="https://code.jquery.com/jquery.slim.min.js"><\/script>')</script>
-      <script src="{% static 'inv/js/bootstrap.bundle.min.js' %}" ></script>
+
 </html>
