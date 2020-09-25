@@ -3,9 +3,9 @@ A lightweight property inventory helper
 
 ## Still in development (v0.\*), *so expect things to not work*
 
-This app is for assisting SCA branches in managing both annual inventories and pack-in/pack-out at events. It is designed to be installed on a portable machine - to be taken to events and serve up web pages with inventory information without needing access to the Internet. A [$35 Raspberry Pi](https://www.raspberrypi.org/products/) fits the bill nicely here, but take my advice and spend the extra $10 for a [case](https://www.raspberrypi.org/products/raspberry-pi-4-case/). 
+This app is for assisting SCA branches in managing both annual inventories and pack-in/pack-out at events. It is designed to be installed on a portable machine - to be taken to events and serve up web pages with inventory information without needing access to the Internet. A [$35 Raspberry Pi](https://www.raspberrypi.org/products/) fits the bill nicely here, but take my advice and spend the extra $10 for a [case](https://www.raspberrypi.org/products/raspberry-pi-4-case/) if you go that route. 
 
-See it in action at https://cordelya.pythonanywhere.com
+See it in action at https://cordelya.pythonanywhere.com (note: whatever's in the main branch - changes in dev branches won't be available)
 
 Want to try it out? Scroll to the bottom!
 
@@ -14,7 +14,7 @@ Items are grouped into Boxes (can be literal or virtual boxes), which are then f
 Key: (I) = implemented
      (N) = not yet implemented
 
-(I/N) notations updated 9/20/2020.
+(I/N) notations updated 9/23/2020.
 
 * (I) Tracks whether items are consumable or not
 * (I) Tracks the replacement value of each item. Front-end displays total aggregate value on index, and sub-values on Warehouse and Box detail pages.
@@ -23,24 +23,34 @@ Key: (I) = implemented
   * (N) Keyword detail pages list all items
 * (I) Move items from one box to another by updating the current box's end date and creating a new items_in_boxes record for the new box, leaving the end date blank. Item's box history will be preserved. Front end shows only current location.
 * Reports: 
-  * (N) entire inventory arranged by warehouse and box with no orphaned tables or optionally starting a new page every box
+  * (N) PDF export with entire inventory arranged by warehouse and box with no orphaned tables or optionally starting a new page every box
+  * (I) PDF export per table on all 3 current /reports/ directory views, via dataTables. Has dependencies not included/tracked in this repo
   * (N) export entire inventory to .csv for spreadsheet-friendly backup. Filter by keywords, Warehouses, boxes. Group by Warehouse or Box (NOTE: .csv does not support multiple sheets per file, so if you request grouping by Warehouse or by Box, you will receive multiple .csv files - one for each group object.)
+     * This is partially implemented. You can grab individual boxes or a master list of items, which is enough to build a spreadsheet file.
   * (I) export database as database-friendly backup file (available on command-line)
   * (N) consumable items, per box, for printing to allow event staff or annual inventory staff to verify quantities remaining and make notes.
+     * A stopgap is available on the box report page - type "True" in the search box on each table and click "PDF" and you have a list. 
   * (I) consumable items, filtered to show items which are running low, to use as a shopping list for replenishment
 * (N) Pack-out friendly search: when item arrives for packing, begin search with general item description (ie "ladle"), then narrow search by keyword (Category: Kitchen, Material: Metal, etc.) until matching item is identified (verify visually via inline photo) and place item in indicated box. Can go very quickly if a person familiar with the system is staffing the search terminal.
- * (N) Warehouse detail page shows photo associated with warehouse. This could be an image of an individual's or officer's armory, or a photo of the physical warehouse.
- * (N) Box listing on warehouse detail, box list, and box detail includes photo of box, if set.
+     * Items report table (/reports/items/) is fully searchable, but does not display pictures and does not include keywords. Would need to click through to each search result to verify.
+ * (I) Warehouse detail page shows photo associated with warehouse. This could be an image of an individual's or officer's armory, or a photo of the physical warehouse.
+ * (I) Box listing on warehouse detail, box list, and box detail includes photo of box, if set.
  * (I) Item listing on box detail, item list, and item detail shows photo if set. Set photo by saving images to /static/inv/img and recording the image's filename in the item's record. Recommended image file naming convention: by item ID, item name, or combo. Image name field and image name (including extension, but excluding path) must match exactly. Run python manage.py collectstatic after adding any files to the static/ folder tree. If image is not set, helper text asks viewer to snap a photo of the item and email it to the inventory management contact with the item's id number in the subject line (item id number is displayed).
  
- How to get it: (note: I haven't run through this procedure from start to finish yet - let me know if I've missed a step somewhere)
- Requirements: 
+ ## How to get it: 
+ (note: I haven't run through this procedure from start to finish yet - let me know if I've missed a step somewhere)
+ Dependencies: 
  * Python3[.6|.7|.8] (get the latest you can, but 3.6 is still supported if that's what you've got.)
- * Git
- * Pip
- * Django
- 
- in the folder where you want to install the app (it comes with a top-level folder called "inventory")
+ * git - installable via your package manager
+ * Pip (usually comes with Python. You may need to use "pip3" to invoke)
+ * Django - installable via your package manager
+ * DataTables and Bootstrap 4. base.html is set up to load local js/css assets for offline operation. You can either grab the assets or change the refs to CDN refs.
+     * DataTables has a custom asset builder at https://datatables.net/download/. At minimum, you need:
+          * Bootstrap 4 in the styling category
+          * jQuery and DataTables in the packages category
+          * Buttons (and sub extensions per your button needs)
+          
+ in the folder where you want to install the app (it comes with a top-level folder called "inventory"), do:
  
  ````
  $ git clone https://github.com/Cordelya/inventory.git
