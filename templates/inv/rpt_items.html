@@ -3,25 +3,11 @@
 
 {% block content %}
 {% load static %}
-<div class="container">
-  <h1>Items</h1>
-  <p class="lead">Item links lead to each item's detail page.</p>
-    <!-- set links to box anchors, but only if boxes count is > 1 -->
+<div class="container mr-auto">
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <span class="navbar-brand mr-auto px-2 bg-primary">Sort</span>
-    <button class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto px-2">
-        <li class="nav-item"><a class="nav-link" href="{% url 'report_itms' %}1/">By Item Name
-          </a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'report_itms' %}2/">By Item ID
-          </a></li>
-      </div>
-    </nav>
+  <h1>Items</h1>
+  <p class="lead">Item names lead to each item's detail page.</p>
+    <!-- set links to box anchors, but only if boxes count is > 1 -->
 
   <!-- create the tables -->
      <table id="items" class="table table-striped table-responsive itemtable">
