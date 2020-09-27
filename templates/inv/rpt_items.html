@@ -29,7 +29,7 @@
        </thead>
        <tbody>
             {% for i in items %}
-                <tr id="item-{{ i.item_id }}" scope="row"}>
+                <tr id="item-{{ i.item_id }}" scope="row">
                   <td>{{ i.item_id }}</td>
                   <td><a href="{% url 'item' i.item_id %}">{{ i.item_name }}</a></td>
                   <td>{{ i.item_desc }}</td>

@@ -22,20 +22,16 @@ def reports(request):
     return render(request, 'inv/reports.html')
 
 def report_itm(request, item_sort=None):
-    # item_sort 1 is alpha by item_name
-    if item_sort == 1:
-        items = Items.objects.all().prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
-    # item_sort 2 is by item_id
-    elif item_sort == 2:
-         items = Items.objects.all().prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).order_by('item_id')
-    else:   
-         items = Items.objects.all().prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField()))
-    return render(request, 'inv/rpt_items.html', {'items' : items})
-    
+    items = Items.objects.all().prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField()))
+    kw = Keywords_in_items.objects.all()
+    for k in kw:
+        k.kw=k.keyword_id.replace(': ', '-')
+    return render(request, 'inv/rpt_items.html', {'items' : items, 'kw' : kw})
+
 def report_box(request, box=None):
     if box:
         boxes = Boxes.objects.filter(box_id=box)
-    else: 
+    else:
         boxes = Boxes.objects.all()
     items = Items.objects.all().prefetch_related().annotate(boxid=F('itm_id__box_id')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
     return render(request, 'inv/rpt_boxes.html', {'items' : items, 'boxes' : boxes})
@@ -47,8 +43,17 @@ def report_wh(request, whid=None):
     else: wh = Warehouse.objects.all()
     box = Boxes.objects.all().prefetch_related().annotate(whid=F('warehouse__warehouse_id'))
     items =  items = Items.objects.all().prefetch_related().annotate(boxid=F('itm_id__box_id')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
-    
+
     return render(request, 'inv/rpt_wh.html', {'items' : items, 'wh' : wh, 'box' : box})
+
+def report_full(request):
+    # full all-in-one inventory report for exporting via dataTables
+    wh = Warehouse.objects.all().prefetch_related().annotate(box_count=Count('bx_wh__box_id'))
+    box = Boxes.objects.all().prefetch_related().annotate(whid=F('warehouse__warehouse_id')).annotate(sort_name=Lower('box_name'))
+    box_alpha = box.order_by('sort_name')
+    items =  items = Items.objects.all().prefetch_related().annotate(boxid=F('itm_id__box_id')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
+
+    return render(request, 'inv/rpt_full.html', {'items' : items, 'wh' : wh, 'box' : box, 'box_alpha': box_alpha})
 
 def items(request):
     items = Items.objects.all().prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
@@ -56,9 +61,9 @@ def items(request):
 
 def item(request, itemid):
     item = Items.objects.filter(item_id=itemid).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).get(item_id=itemid)
-    box = Items_in_boxes.objects.filter(item_id=itemid).filter(date_to__isnull=True).annotate(name=F('box_id__box_name')).annotate(bx_id=F('box_id')).get(item_id=itemid) 
+    box = Items_in_boxes.objects.filter(item_id=itemid).filter(date_to__isnull=True).annotate(name=F('box_id__box_name')).annotate(bx_id=F('box_id')).get(item_id=itemid)
     wh = Boxes.objects.filter(box_id=box.bx_id).annotate(name=F('warehouse__warehouse_name')).get(box_id=box.bx_id)
-    return render(request, 'inv/item.html', {'item' : item , 'box' : box, 'wh' : wh }) 
+    return render(request, 'inv/item.html', {'item' : item , 'box' : box, 'wh' : wh })
 
 def boxes(request):
     boxes = Boxes.objects.all().annotate(num_items=Count('bx_id__item_id', filter=Q(bx_id__date_to__isnull=True)))
@@ -93,4 +98,3 @@ def inventory(request, invid):
 
 def keywords(request):
     return HttpResponse("Hello, world. You're looking at a list of keywords.")
-
