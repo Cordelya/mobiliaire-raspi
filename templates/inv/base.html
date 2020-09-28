@@ -55,17 +55,25 @@
       <li class="nav-item active">
         <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only"></span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'reports' %}">Reports</a>
-      </li>
+      <li class="nav-item dropdown">
+     <a class="nav-link dropdown-toggle" href="#" id="dropdown01"
+         data-toggle="dropdown" aria-haspopup="true"
+         aria-expanded="false">Reports</a>
+       <div class="dropdown-menu" aria-labelledby="dropdown01">
+       <a class="dropdown-item" href="{% url 'reports' %}">Reports Page</a>
+       <a class="dropdown-item" href="{% url 'report_itms' %}">Items</a>
+       <a class="dropdown-item" href="{% url 'report_boxes' %}">Items by Box</a>
+       <a class="dropdown-item" href="{% url 'report_whs' %}">Items by Warehouse and Box</a>
+       <a class="dropdown-item" href="{% url 'report_full' %}">Full Report</a>
+     </li>
       <li class="nav-item">
         <a class="nav-link" href="#" tabindex="-1" ></a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01"
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown02"
           data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">Browse</a>
-        <div class="dropdown-menu" aria-labelledby="dropdown01">
+        <div class="dropdown-menu" aria-labelledby="dropdown02">
           <a class="dropdown-item" href="{% url 'warehouses' %}">Warehouses</a>
           <a class="dropdown-item" href="{% url 'boxes' %}">Boxes</a>
           <a class="dropdown-item" href="{% url 'items' %}">Items</a>
