@@ -10,6 +10,7 @@
 <!-- sidebar -->
 <nav class="sidebar col-md-2 float-left">
 <h4>Filter by Keyword</h4>
+<p class="lead remove">Start Over</p>
 <ul type="none" class="list">
   {% for k in kw %}
   <li class="neutral kw {{ k.keyword|slugify }}">{{ k.keyword }}</li>
