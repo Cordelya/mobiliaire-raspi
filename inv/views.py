@@ -49,8 +49,8 @@ def report_wh(request, whid=None):
 def report_full(request):
     # full all-in-one inventory report for exporting via dataTables
     wh = Warehouse.objects.all().prefetch_related().annotate(box_count=Count('bx_wh__box_id'))
-    box = Boxes.objects.all().prefetch_related().annotate(whid=F('warehouse__warehouse_id')).annotate(sort_name=Lower('box_name'))
-    box_alpha = box.order_by('sort_name')
+    box = Boxes.objects.all().prefetch_related().annotate(whid=F('warehouse__warehouse_id'))
+    box_alpha = Boxes.objects.all().prefetch_related().annotate(whid=F('warehouse__warehouse_id')).annotate(sort_name=Lower('box_name')).order_by('sort_name')
     items =  items = Items.objects.all().prefetch_related().annotate(boxid=F('itm_id__box_id')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
 
     return render(request, 'inv/rpt_full.html', {'items' : items, 'wh' : wh, 'box' : box, 'box_alpha': box_alpha})
