@@ -22,7 +22,7 @@ def reports(request):
     return render(request, 'inv/reports.html')
 
 def report_itm(request, item_sort=None):
-    items = Items.objects.all().prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField()))
+    items = Items.objects.all().prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(kw=F("item_id"))
     kw = Keywords_in_items.objects.all()
     for k in kw:
         k.kw=k.keyword_id.replace(': ', '-')
@@ -57,12 +57,14 @@ def report_full(request):
 
 def items(request):
     items = Items.objects.all().prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
-    return render(request, 'inv/items.html', {'items' : items})
+    kw = Keywords.objects.only('keyword').order_by('keyword')
+    return render(request, 'inv/items.html', {'items' : items, 'kw' : kw})
 
 def item(request, itemid):
     item = Items.objects.filter(item_id=itemid).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).get(item_id=itemid)
     box = Items_in_boxes.objects.filter(item_id=itemid).filter(date_to__isnull=True).annotate(name=F('box_id__box_name')).annotate(bx_id=F('box_id')).get(item_id=itemid)
     wh = Boxes.objects.filter(box_id=box.bx_id).annotate(name=F('warehouse__warehouse_name')).get(box_id=box.bx_id)
+    kw = Keywords_in_items.objects.filter(item_id=item_id)
     return render(request, 'inv/item.html', {'item' : item , 'box' : box, 'wh' : wh })
 
 def boxes(request):
