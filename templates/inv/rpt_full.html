@@ -1,0 +1,127 @@
+{% extends 'inv/base.html' %}
+
+
+{% block content %}
+{% load static %}
+<div class="container-fluid">
+
+<div class="row border-top border-bottom">
+  <div class="col-md-8 offset-2">
+    <h1>Full Report for Export</h1>
+      <p class="lead">Arranged using fewer tables to facilitate print/export to file as backup or hard copy.</p>
+      <p>Rows will be exported regardless of how many rows appear at one time (paging). Filtered rows will only export the filter results.</p>
+  </div>
+</div><!-- end heading row -->
+<div class="row my-2">
+  <div class="col-md-8 offset-2 clearfix">
+    <!-- Warehouse List -->
+    <h2>Table 1|<br/>Warehouse List</h2>
+      <table class="table table-responsive border rounded width:100%">
+        <thead>
+        <tr class="wh-color wh-color-text"><th>Warehouse ID</th><th>Warehouse Name</th><th>Warehouse Details</th><th>Box Count</th></tr>
+        </thead>
+        <tbody>
+        {% for w in wh %}
+          <tr><td>{{ w.warehouse_id }}</td><td>{{ w.warehouse_name }}</td><td>{{ w.warehouse_details }}<td>{{ w.box_count }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div><!-- end warehouse row -->
+<div class="row my-1">
+  <div class="col-md-6 clearfix">
+
+      <!-- boxes by id -->
+      <h2>Table 2|<br/>Boxes by Box ID</h2>
+      <table class="table table-responsive border rounded m-1 width:100%">
+        <thead>
+        <tr class="box-color box-color-text"><th>Box ID</th><th>Box Name</th><th>Box Description</th><th>Warehouse ID</th></tr>
+        </thead>
+        <tbody>
+        {% for b in box %}
+          <tr><td>{{ b.box_id }}</td><td>{{ b.box_name }}</td><td>{{ b.box_description }}</td><td>{{ b.whid }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+  </div>
+
+  <div class="col-md-6 clearfix">
+        <!-- Boxes by alpha -->
+        <h2>Table 3|<br/>Boxes by Box Name</h2>
+      <table class="table table-responsive border rounded m-1 width:100%">
+        <thead>
+          <tr class="box-color box-color-text"><th>Box ID</th><th>Box Name</th><th>Box Description</th><th>Warehouse ID</th></tr>
+        </thead>
+        <tbody>
+          {% for b in box_alpha %}
+            <tr><td>{{ b.box_id }}</td><td>{{ b.box_name }}</td><td>{{ b.box_description }}</td><td>{{ b.whid }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div><!-- end boxes row -->
+<div class="row">
+  <div class="col-md-10 offset-1">
+    <hr/>
+  </div>
+</div><!-- end hr row -->
+  <div class="row">
+    <div class="md-col-12">
+  <!-- begin warehouse/box/item listing -->
+  <h2>Table 4|<br/>Items by Warehouse and Box</h2>
+  <table class="table table-responsive border rounded clearfix">
+    <thead>
+      <tr class="item-color item-color-text">
+      <th>Wh. ID</th>
+      <th>Box ID</th>
+      <th>Item ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Quantity</th>
+      <th>Value Each</th>
+      <th>Total Value</th>
+      <th>Is Consumable?</th>
+      <th>Percent Remaining</th>
+      </tr>
+    </thead>
+    <tbody>
+
+  {% for w in wh %}
+    {% for b in box %}
+      {% if w.warehouse_id == b.whid %}
+
+  {% for i in items %}
+    {% if b.box_id == i.boxid %}
+      <tr>
+      <td>{{ w.warehouse_id }}</td>
+      <td>{{ b.box_id }}</td>
+      <td>{{ i.item_id }}</td>
+      <td>{{ i.item_name }}</td>
+      <td>{{ i.item_desc }}</td>
+      <td>{{ i.item_qty }}</td>
+      <td>&#36;{{ i.item_value|floatformat:2 }}</td>
+      <td>&#36;{{ i.totval|floatformat:2 }}</td>
+      <td>{{ i.item_consumable }}</td>
+      <td>{{ i.item_remaining }}&#37;</td>
+      </tr>
+              {% endif %}<!-- end of item filter -->
+            {% endfor %}<!-- end of item loop -->
+
+
+    {% endif %}<!-- end of box filter -->
+    {% endfor %}<!-- end of box loop -->
+
+
+  {% endfor %}<!-- end of wh loop -->
+  </tbody>
+
+</table>
+</div>
+</div>
+<div class="row">
+  <div class="col-md-6 offset-3">
+<p class="text-center"> Report Generated on {% now "l, F jS, Y" %}</p>
+</div>
+</div>
+  </div>
+{% endblock %}

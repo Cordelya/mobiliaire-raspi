@@ -8,8 +8,8 @@
   <h1>Items Organized by Warehouse and Box</h1>
     <p class="lead">Warehouse and box links lead to a similar report for that
     single warehouse or box. Item links lead to each item's detail page.</p>
-    <!-- set links to warehouse anchors, but only if wh count > 1 -->
-    {% if wh|length > 1 %}
+
+    {% if wh|length > 1 %} <!-- set links to warehouse anchors, but only if wh count > 1 -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <span class="navbar-brand mr-auto px-2 bg-primary">Jump to: </span>
       <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -27,7 +27,7 @@
       </div>
     </nav>
     {% endif %}
-  <!-- create the tables -->
+    <!-- create each table -->
   {% for w in wh %}
 <div class="container">
   <a name="{{ w.warehouse_id }}"/>
