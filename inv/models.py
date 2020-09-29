@@ -15,7 +15,7 @@ class Warehouse(models.Model):
 
 class Staff(models.Model):
     staff_id = models.AutoField(primary_key=True)
-    staff_name = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100, default='staff name')
     staff_title = models.CharField(max_length=50, blank=True)
     staff_contact = models.CharField(max_length=100, blank=True)
     class Meta: verbose_name_plural = "Staff"
@@ -23,9 +23,9 @@ class Staff(models.Model):
         return '%s | %s' % (self.staff_name, self.staff_title)
 
 class Boxes(models.Model):
-    box_id = models.IntegerField(primary_key=True)
+    box_id = models.AutoField(primary_key=True)
     box_name = models.CharField(max_length=20, default='box' )
-    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, related_name='bx_wh')
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, related_name='bx_wh', default=1)
     box_location = models.CharField(max_length=300, blank=True)
     box_description = models.CharField(max_length=300, blank=True)
     other_box_details = models.CharField(max_length=300, blank=True)
@@ -37,7 +37,7 @@ class Boxes(models.Model):
 class Items(models.Model):
     item_id = models.AutoField(primary_key=True)
     item_name = models.CharField(max_length=50, default='name')
-    item_owner_staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='owner')
+    item_owner_staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='owner', default=1)
     item_desc = models.CharField(max_length=500, blank=True)
     item_img = models.CharField(max_length=50, blank=True)
     item_qty = models.IntegerField(default='1')
@@ -51,7 +51,7 @@ class Items(models.Model):
             MinValueValidator(0)
         ]
             )
-    
+
     class Meta: verbose_name_plural = "Items"
 
 
@@ -61,8 +61,8 @@ class Items_in_boxes(models.Model):
     box_id = models.ForeignKey(Boxes, on_delete=models.CASCADE, related_name='bx_id')
     date_from = models.DateField(default=timezone.now)
     date_to = models.DateField(blank=True, null=True)
-    moved_by_staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
-    reason = models.CharField(max_length=100)
+    moved_by_staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE, default=1)
+    reason = models.CharField(max_length=100, default='add to database')
     class Meta: verbose_name_plural = "Items in Boxes"
 
 class Keywords(models.Model):
@@ -83,8 +83,7 @@ class Inventory(models.Model):
     inv_warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, blank=True)
     inv_box = models.ForeignKey(Boxes, on_delete=models.CASCADE, blank=True)
     inv_item = models.ForeignKey(Items, on_delete=models.CASCADE, blank=True)
-    inv_comment = models.CharField(max_length=500)
+    inv_comment = models.CharField(max_length=500, default='an inventory was conducted')
     class Meta: verbose_name_plural = "Inventories"
     def __str__(self):
         return '%s' % (self.inv_date, inv_comment)
-
