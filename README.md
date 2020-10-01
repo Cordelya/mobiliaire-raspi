@@ -14,7 +14,7 @@ Want to try it out?
 ````
 $ git clone https://github.com/Cordelya/inventory.git
 ````
-(Scroll to the bottom for a more detailed guide if you're not familiar with the Django framework.)
+[See a more detailed procedure.](https://github.com/Cordelya/inventory/wiki/getStarted)
 
 Inventory Items are grouped into Boxes (which can be literal or virtual boxes), which are then further grouped into Warehouses. In this context, a warehouse is a geographic location where a box or boxes are stored. A branch cargo trailer full of items is a Warehouse. Examples of virtual boxes include the "loose in the trailer" box, the "driver-side cargo rack" box, or the "gold-key-closet" box. 
 
@@ -49,53 +49,5 @@ Key: (I) = implemented
      * Defaults to "box.png" to facilitate using a placeholder file.
  * (I) Item listing on box detail, item list, and item detail shows photo, if set. Set photo by saving image file to /static/inv/img and recording the image's filename in the item's record. Recommended image file naming convention: by item ID, item name, or combo. Image name field and image name (including extension, but excluding path) must match exactly. Run python manage.py collectstatic after adding any files to the static/ folder tree. 
      * If image is not set, helper text asks viewer to snap a photo of the item and email it to the inventory management contact with the item's id number in the subject line (item id number is displayed). Adding photos via webcam control is planned for a release after 1.0.
- 
- ## How to get it: 
- (note: I haven't run through this procedure from start to finish yet - let me know if I've missed a step somewhere)
- Dependencies: 
- * Python3[.6|.7|.8] (get the latest you can, but 3.6 is still supported if that's what you've got.)
- * git - installable via your package manager
- * Pip (comes with Python. You may need to use "pip3" to invoke)
- * Django - installable via pip 
- * DataTables and Bootstrap 4. | templates/inv/base.html is set up to load local js/css assets for offline operation by default and by design. You can either grab the compiled assets from their respective websites or change the refs to CDN refs, both in the CSS refs in the header and the JS refs near the bottom of templates/inv/base.html.
-     * DataTables has a custom asset builder at https://datatables.net/download/. At minimum, you need:
-          * Bootstrap 4 in the styling category
-          * jQuery and DataTables in the packages category
-          * Buttons (and sub extensions per your button needs)
-          * Any other dt extensions you want access to
-     * Both Bootstrap 4 and the keyword filtering function also use jQuery.
-     
- in the folder where you want to install the app (it comes with a top-level folder called "inventory"), do:
- 
- ````
- $ git clone https://github.com/Cordelya/inventory.git
- ````
- 
-Copy credentials-example.py to credentials.py and enter a generated secret key in the file, inside the single quotes, overwriting "paste your secret key here". Search "django secret key generator" if you need help with that.
-
-````
-$ python manage.py migrate
-$ python manage.py createsuperuser # create a user account so you can add items to the database using the admin web interface. Don't forget those login details!
-$ python manage.py runserver
-````
-
-Head to 127.0.0.1:8000/admin and log in
-
-Begin by adding at least one warehouse. Add at least one box to one warehouse. Add some keywords and at least one staffmember. Add at least one item (and associate it with a box and keywords in the same form).
-
-Suggested keywords include:
-* categories structured as Category: Category, so kitchen items might use a category keyword of Category: Kitchen
-* colors structured as Color: Color, so an item that is blue and red might use Color: Blue and Color: Red
-* materials structured as Material: Material, so an item that is glass might use Material: Glass
-
-You can add as many keywords as you want to each item. If you want to mark some items that need attention, you could assign them a "TODO" keyword and then filter on the "TODO" keyword later on.
-
-A note about items and quantities:
-
-If you have 15 non-disposable water pitchers that are all the same, you can put them in one item record. Set the quantity to 15 and leave the "percent remaining" field at 100. 
-If you have 200 disposable plastic cups, but a "full" supply of cups is 500, you can enter 500 as the quantity, check the "consumable" box, and then enter 40 in the "percent remaining" field. 
-
-If you have a roll of plastic cling wrap, enter 1 as the quantity, and estimate how much is left on the roll for the "percent remaining" field. Check the "consumable" box.
-When you view the consumables shopping list, you will see all of the consumable items, their "full" quantity, and their percent remaining. If the item count is greater than 1, the quantity needed will be calculated based on the "full" quantity and percentage remaining so your restocking shopper will know how many of each item they need to buy.
 
 This app is built on a well-established and well-documented framework. If you're not sure how to do something, try checking the Django documentation pages first.
