@@ -1,5 +1,7 @@
-# inventory
+# Mobiliaire
 A lightweight property inventory helper
+
+> mobiliaire (n.): Middle French form of "mobiliary"; pertaining to furniture or movable property
 
 ## Still in development (v0.\*). Main branch is generally stable. 1.0 coming soon to a "stable" branch near you.
 
