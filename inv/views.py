@@ -16,7 +16,19 @@ def dash(request):
     return render(request, 'inv/dash.html', {})
 
 def search(request):
-    return HttpResponse("Hello, world. You're at the Search Page.")
+    if request.method == 'GET':
+        search = request.GET.get('search')
+        if search == None:
+            return render(request, 'inv/search.html')
+        else:
+            result = Items.objects.filter(item_name__icontains=search).prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(boxid=F('itm_id__box_id')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(whid=F('itm_id__box_id__warehouse')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
+            kw_result = Keywords.objects.filter(keyword__icontains=search)
+            box_result = Boxes.objects.filter(box_name__icontains=search)
+            wh_result = Warehouse.objects.filter(warehouse_name__icontains=search)
+            kw = Keywords.objects.only('keyword').order_by('keyword')
+            return render(request, 'inv/search.html', {'result' : result, 'kw_result' : kw_result, 'kw' : kw, 'box_result' : box_result, 'wh_result' : wh_result})
+    else:
+        return render(request, 'inv/search.html',)
 
 def reports(request):
     return render(request, 'inv/reports.html')
@@ -56,7 +68,7 @@ def report_full(request):
     return render(request, 'inv/rpt_full.html', {'items' : items, 'wh' : wh, 'box' : box, 'box_alpha': box_alpha})
 
 def items(request):
-    items = Items.objects.all().prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
+    items = Items.objects.all().prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(boxid=F('itm_id__box_id')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(whid=F('itm_id__box_id__warehouse')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
     kw = Keywords.objects.only('keyword').order_by('keyword')
     return render(request, 'inv/items.html', {'items' : items, 'kw' : kw})
 
@@ -98,5 +110,12 @@ def inventories(request):
 def inventory(request, invid):
     return HttpResponse("Hello, world. You're looking at an individual inventory summary.")
 
-def keywords(request):
-    return HttpResponse("Hello, world. You're looking at a list of keywords.")
+def keywords(request, kw_slug=None):
+    if kw_slug:
+        keyword = Keywords.objects.get(keyword_slug=kw_slug)
+        kw = Keywords_in_items.objects.prefetch_related().filter(keyword__keyword_slug=kw_slug)
+        items = Items.objects.prefetch_related().filter(kw_itm__keyword__keyword_slug=kw_slug).annotate(box=F('itm_id__box_id__box_name')).annotate(boxid=F('itm_id__box_id')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(whid=F('itm_id__box_id__warehouse')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
+        return render(request, 'inv/keywords.html', {'keyword' : keyword, 'kw' : kw , 'items' : items})
+    else:
+        kw = Keywords.objects.all()
+        return render(request, 'inv/keywords.html', {'kw' : kw})

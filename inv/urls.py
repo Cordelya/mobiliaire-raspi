@@ -22,4 +22,6 @@ urlpatterns = [
         path('reports/wh/<int:whid>/', views.report_wh, name='report_wh'),
         path('reports/wh/', views.report_wh, name='report_whs'),
         path('reports/full/', views.report_full, name='report_full'),
+        path('keyword/', views.keywords, name='keywords'),
+        path('keyword/<str:kw_slug>/', views.keywords, name='keyword'),
         ]

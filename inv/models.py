@@ -2,6 +2,7 @@ from django.db import models
 import datetime
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.template.defaultfilters import slugify
 
 class Warehouse(models.Model):
     warehouse_id = models.AutoField(primary_key=True)
@@ -70,7 +71,11 @@ class Items_in_boxes(models.Model):
 class Keywords(models.Model):
     keyword = models.CharField(primary_key=True, max_length=50)
     keyword_desc = models.CharField(max_length=100, blank=True)
+    keyword_slug = models.CharField(max_length=50, blank=True)
     class Meta: verbose_name_plural = "Keywords"
+    def save(self, *args, **kwargs):
+        self.keyword_slug = slugify(self.keyword)
+        super(Keywords, self).save(*args, **kwargs)
     def __str__(self):
         return '%s' % (self.keyword)
 

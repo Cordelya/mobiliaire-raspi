@@ -9,7 +9,7 @@
     <meta name="description" content="SCA Branch Inventory Manager">
     <meta name="author" content="Cordeilla Sharpe">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>Inventory Manager</title>
+    <title>Mobiliaire Inventory Manager</title>
 <!-- Bootstrap CSS bundle -->
 <link rel="stylesheet" href="{% static 'inv/css/bootstrap.min.css' %}">
 <!-- Datatables CSS Bundle -->
@@ -40,7 +40,7 @@
       /* these items provide styling to the keyword filter on the Items page */
       .on { font-weight: bold }
       .off { font-style: italic}
-      .neutral { font-weight: normal; font-style: normal } 
+      .neutral { font-weight: normal; font-style: normal }
     </style>
 
   </head>
@@ -56,7 +56,7 @@
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only"></span></a>
+        <a class="nav-link" href="{% url 'index' %}">Mobiliaire Inventory Manager <span class="sr-only"></span></a>
       </li>
       <li class="nav-item dropdown">
      <a class="nav-link dropdown-toggle" href="#" id="dropdown01"
@@ -85,8 +85,8 @@
         </div>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0" name="search">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+    <form class="form-inline my-2 my-lg-0" name="search" action="{% url 'search' %}" method="get">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
   </div>
@@ -99,7 +99,7 @@
 </main>
 
 <footer class="container">
-  <p>&copy; Shire of ________ 2020</p>
+  <p>mobiliaire (n.): Middle French form of "mobiliary"; pertaining to furniture or movable property</p>
 </footer>
 <script type="text/javascript" src="{% static 'inv/js/jquery-3.5.1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'inv/js/bootstrap.bundle.min.js' %}"></script>

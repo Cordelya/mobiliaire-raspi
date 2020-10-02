@@ -5,8 +5,13 @@ __pycache__
 myvenv
 db.sqlite3
 db.json
-/static/inv/img
+static/inv/img
 .DS_Store
-/zip
+zip/
 .wakatime
 credentials.py
+static/inv/css/dataTables.bootstrap4.min.css
+static/inv/css/dataTables.bootstrap4.min.css:Zone.Identifier
+static/inv/js/datatables.min.js
+csv/
+root/

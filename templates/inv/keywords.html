@@ -4,21 +4,29 @@
 {% block content %}
 {% load static %}
 <div class="container-fluid clearfix">
-  <div class="col-md-8 offset-2"><h1>Items</h1>
-  <p class="lead">There are {{ items|length }} items in this collection.</p>
-  </div>
-<!-- sidebar -->
-<nav class="sidebar col-md-2 float-left">
-<h4>Filter by Keyword</h4>
-<p class="lead remove">Start Over</p>
-<ul type="none" class="list">
-  {% for k in kw %}
-  <li class="neutral kw {{ k.keyword|slugify }}">{{ k.keyword }}</li>
-  {% endfor %}
-</ul>
-</nav>
-<main role="main" class="col-md-10 float-right">
 
+
+<main role="main" class="main">
+
+  {% if not items %}
+  <div class="col-md-8 offset-2"><h1>Keywords</h1>
+  <p class="lead">There are {{ kw|length }} keywords in this collection.</p>
+  </div>
+  <div class="row mb-3">
+    {% for k in kw %}
+    <div class="col-md-3">
+      <p><a href="{% url 'keyword' k.keyword_slug %}">{{ k.keyword }}</a>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% if items %}
+
+  <div class="col-md-8 offset-2"><h1>Keyword Filter</h1>
+
+  <p class="lead">There are {{ items|length }} items tagged with <em>{{ keyword.keyword }}</em>.</p>
+
+  </div>
   <div class="row mb-3">
     {% for i in items %}
 
@@ -66,6 +74,7 @@
       </div>
     {% endfor %}
   </div>
+  {% endif %}
 </main>
 </div>
 <div class="clear">
