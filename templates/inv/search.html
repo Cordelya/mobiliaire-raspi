@@ -5,12 +5,8 @@
 {% load static %}
 <div class="container-fluid clearfix">
   <div class="col-md-8 offset-2"><h1>Search Results</h1>
-  {% if result %}
-  <p class="lead">Your query returned {{ result|length }} results.</p>
-  {% else %}
-  <p class="lead">Didn't receive any search terms, or the search was too complex. Try again using a single term.</p>
-  {% endif %}
-  </div>
+    <p class="lead">Your query returned the following results.</p>
+    </div>
 <!-- sidebar -->
 <nav class="sidebar col-md-2 float-left">
 <h4>Filter by Keyword</h4>
@@ -21,22 +17,79 @@
   {% endfor %}
 </ul>
 </nav>
+
 <main role="main" class="col-md-10 float-right">
   {% if kw_result %}
   <div class="row mb-3">
-    <div class="col-md-6 offset-3">
-      <p>Found the following Keyword Matches</p>
+    <div class="col-md-12">
+      <p>Keyword Matches</p>
     </div>
     </div>
     <div class="row mb-3">
       {% for k in kw_result %}
         <div class="col-md-3">
-          <p><a href="{% url keyword k.keyword %}">{{ k.keyword }}</a></p>
+          <p><a href="{% url 'keyword' k.keyword|slugify %}">{{ k.keyword }}</a></p>
         </div>
+        {% endfor %}
+  </div>
+{% else %}
+<div class="row mb-3">
+  <div class="col-md-12">
+    <p class="alert alert-warning">No Keyword Matches</p>
+  </div>
   </div>
 {% endif %}
+
+<hr/>
+{% if box_result %}
+<div class="row mb-3">
+  <div class="col-md-12">
+    <p>Box Matches</p>
+  </div>
+  </div>
   <div class="row mb-3">
-    {% if result %}
+    {% for b in box_result %}
+      <div class="col-md-3">
+        <p><a class="" href="{% url 'box' b.box_id %}">{{ b.box_id }} | {{ b.box_name }}</a></p>
+      </div>
+      {% endfor %}
+</div>
+{% else %}
+<div class="row mb-3">
+  <div class="col-md-12">
+    <p class='alert alert-warning'>No Box Matches</p>
+  </div>
+  </div>
+{% endif %}
+<hr/>
+{% if wh_result %}
+<div class="row mb-3">
+  <div class="col-md-12">
+    <p>Warehouse Matches</p>
+  </div>
+  </div>
+  <div class="row mb-3">
+    {% for w in wh_result %}
+      <div class="col-md-3">
+        <p><a href="{% url 'warehouse' w.warehouse_id %}">{{ w.warehouse_id }} | {{ w.warehouse_name }}</a></p>
+      </div>
+      {% endfor %}
+</div>
+{% else %}
+<div class="row mb-3">
+  <div class="col-md-12">
+    <p class="alert alert-warning">No Warehouse Matches</p>
+  </div>
+  </div>
+{% endif %}
+<hr/>
+{% if result %}
+    <div class="row mb-3">
+      <div class="col-md-12">
+        <p>Item Matches</p>
+      </div>
+    </div>
+      <div class="row mb-3">
     {% for i in result %}
 
        <div class="col-md-4 themed-grid-col item {% for k in i.kw_itm.all %} {{ k.keyword_id|slugify }}{% endfor %}">
@@ -82,8 +135,15 @@
         </div>
       </div>
     {% endfor %}
-    {% endif %}
+
   </div>
+  {% else %}
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <p class="alert alert-warning">No Item Matches</p>
+    </div>
+    </div>
+  {% endif %}
 </main>
 </div>
 <div class="clear">

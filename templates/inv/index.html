@@ -19,17 +19,17 @@
       <div class="col-md-4">
         <h2>Warehouse List</h2>
         <p>A Warehouse is a geographic location which contains one or more boxes. </p>
-        <p><a class="btn btn-secondary" href="{% url 'warehouses' %}" role="button">View details &raquo;</a></p>
+        <p><a class="btn btn-secondary" href="{% url 'warehouses' %}" role="button">View Warehouses &raquo;</a></p>
       </div>
       <div class="col-md-4">
         <h2>Box List</h2>
         <p>A Box contains one or more Items. Not all Boxes are literal.</p>
-        <p><a class="btn btn-secondary" href="{% url 'boxes' %}" role="button">View details &raquo;</a></p>
+        <p><a class="btn btn-secondary" href="{% url 'boxes' %}" role="button">View Boxes &raquo;</a></p>
       </div>
       <div class="col-md-4">
         <h2>Item List</h2>
         <p>A list of all Items in the database.</p>
-        <p><a class="btn btn-secondary" href="{% url 'items' %}" role="button">View details &raquo;</a></p>
+        <p><a class="btn btn-secondary" href="{% url 'items' %}" role="button">View Items &raquo;</a></p>
       </div>
     </div>
     <!-- Second Row of Link Items -->
@@ -38,12 +38,13 @@
         <h2>Reports</h2>
         <p>Generate Reports and Inventory Management Aids</p>
 
-        <p><a class="btn btn-secondary" href="{% url 'reports' %}" role="button">View details &raquo;</a></p>
+        <p><a class="btn btn-secondary" href="{% url 'reports' %}" role="button">Reports</a></p>
       </div>
       <div class="col-md-4">
         <h2>Search</h2>
-        <p>Search Items by name, category, color, or material</p>
-        <p><a class="btn btn-secondary" href="{% url 'search' %}" role="button">View details &raquo;</a></p>
+        <p>You may search Items by name or keyword by typing your search term into the search box in the upper right corner of any page.
+          This search does not handle complex queries well, so try limiting your search to a single term. You will be able to filter
+            results by keyword on the search results page.</p>
       </div>
 
     </div>
