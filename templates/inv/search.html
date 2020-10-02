@@ -4,8 +4,12 @@
 {% block content %}
 {% load static %}
 <div class="container-fluid clearfix">
-  <div class="col-md-8 offset-2"><h1>Items</h1>
-  <p class="lead">There are {{ items|length }} items in this collection.</p>
+  <div class="col-md-8 offset-2"><h1>Search Results</h1>
+  {% if result %}
+  <p class="lead">Your query returned {{ result|length }} results.</p>
+  {% else %}
+  <p class="lead">Didn't receive any search terms, or the search was too complex. Try again using a single term.</p>
+  {% endif %}
   </div>
 <!-- sidebar -->
 <nav class="sidebar col-md-2 float-left">
@@ -20,7 +24,8 @@
 <main role="main" class="col-md-10 float-right">
 
   <div class="row mb-3">
-    {% for i in items %}
+    {% if result %}
+    {% for i in result %}
 
        <div class="col-md-4 themed-grid-col item {% for k in i.kw_itm.all %} {{ k.keyword_id|slugify }}{% endfor %}">
         <div class="card mb-4 border-dark show">
@@ -65,6 +70,7 @@
         </div>
       </div>
     {% endfor %}
+    {% endif %}
   </div>
 </main>
 </div>
