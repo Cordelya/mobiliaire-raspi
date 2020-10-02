@@ -19,8 +19,9 @@ def search(request):
     if request.method == 'GET':
         search = request.GET.get('search')
         result = Items.objects.filter(item_name__icontains=search).prefetch_related().annotate(box=F('itm_id__box_id__box_name')).annotate(boxid=F('itm_id__box_id')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(whid=F('itm_id__box_id__warehouse')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
+        kw_result = Keywords.objects.filter(keyword__icontains=search)
         kw = Keywords.objects.only('keyword').order_by('keyword')
-        return render(request, 'inv/search.html', {'result' : result, 'kw' : kw})
+        return render(request, 'inv/search.html', {'result' : result, 'kw_result' : kw_result, 'kw' : kw})
     else:
         return render(request, 'inv/search.html', {})
 
@@ -104,5 +105,12 @@ def inventories(request):
 def inventory(request, invid):
     return HttpResponse("Hello, world. You're looking at an individual inventory summary.")
 
-def keywords(request):
-    return HttpResponse("Hello, world. You're looking at a list of keywords.")
+def keywords(request, kw_slug=None):
+    if kw_slug:
+        keyword = Keywords.objects.get(keyword_slug=kw_slug)
+        kw = Keywords_in_items.objects.prefetch_related().filter(keyword__keyword_slug=kw_slug)
+        items = Items.objects.prefetch_related().filter(kw_itm__keyword__keyword_slug=kw_slug).annotate(box=F('itm_id__box_id__box_name')).annotate(boxid=F('itm_id__box_id')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(whid=F('itm_id__box_id__warehouse')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
+        return render(request, 'inv/keywords.html', {'keyword' : keyword, 'kw' : kw , 'items' : items})
+    else:
+        kw = Keywords.objects.all()
+        return render(request, 'inv/keywords.html', {'kw' : kw})

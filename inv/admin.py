@@ -36,7 +36,12 @@ class Items_in_boxesAdmin(admin.ModelAdmin):
     extra = 1
 
 class Keywords_itemsAdmin(admin.ModelAdmin):
-    list_display = ('item_id', 'keyword')
+    list_display = ('item_id', 'keyword',)
+    extra = 1
+
+class KeywordsAdmin(admin.ModelAdmin):
+    model = Keywords
+    list_display = ('keyword', 'keyword_desc', 'keyword_slug')
     extra = 1
 
 admin.site.register(Warehouse, WarehouseAdmin)
@@ -44,12 +49,10 @@ admin.site.register(Staff, StaffAdmin)
 admin.site.register(Boxes, BoxesAdmin)
 admin.site.register(Items, ItemsAdmin)
 admin.site.register(Items_in_boxes, Items_in_boxesAdmin)
-admin.site.register(Keywords)
+admin.site.register(Keywords, KeywordsAdmin)
 admin.site.register(Keywords_in_items, Keywords_itemsAdmin)
 admin.site.register(Inventory)
 
 
 
 # Register your models here.
-
-
