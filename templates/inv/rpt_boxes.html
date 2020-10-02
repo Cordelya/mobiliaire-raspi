@@ -7,7 +7,7 @@
   <h1>Items Organized by Box</h1>
   <p class="lead">Box links lead to a similar report for that
     single box. Item links lead to each item's detail page.</p>
-    <!-- set links to box anchors, but only if boxes count is > 1 -->
+    
     {% if boxes|length > 1 %}
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -31,13 +31,9 @@
   {% for b in boxes %}
   <a name="{{ b.box_id }}"/>
     <table id="box-{{ b.box_id }}" class="table table-striped table-responsive boxtable">
+      <caption style="caption-side:top"> <a href="{% url 'report_box' b.box_id %}">Box {{ b.box_id }} | {{ b.box_name }}</a></caption>
        <thead class="thead-dark">
-         <tr>
-           <th colspan="8">
-             <a href="{% url 'report_box' b.box_id %}">Box {{ b.box_id }} | {{ b.box_name }}</a><span class="box-buttons"></span>
-           </th>
-         </tr>
-         <tr>
+        <tr>
            <th scope="col">ID</th>
            <th scope="col">Name</th>
            <th scope="col">Description</th>
