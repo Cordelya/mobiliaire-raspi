@@ -9,8 +9,6 @@ import django.utils.timezone
 
 class Migration(migrations.Migration):
 
-    replaces = [('inv', '0001_initial'), ('inv', '0002_auto_20200906_0905'), ('inv', '0003_auto_20200906_0921'), ('inv', '0004_auto_20200906_0929'), ('inv', '0005_items_item_qty'), ('inv', '0006_auto_20200906_1229'), ('inv', '0007_auto_20200906_1237'), ('inv', '0008_auto_20200906_1738'), ('inv', '0009_auto_20200908_1028'), ('inv', '0010_auto_20200908_1033'), ('inv', '0011_auto_20200916_1818'), ('inv', '0012_auto_20200917_0914'), ('inv', '0013_auto_20200917_0915'), ('inv', '0014_auto_20200917_2126'), ('inv', '0015_auto_20200917_2222'), ('inv', '0016_auto_20200918_1930'), ('inv', '0017_auto_20200928_1448'), ('inv', '0018_keywords_keyword_slug')]
-
     initial = True
 
     dependencies = [
