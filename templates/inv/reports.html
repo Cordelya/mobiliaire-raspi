@@ -1,13 +1,13 @@
 {% extends 'inv/base.html' %}
 {% block content %}
-{% load static %} 
+{% load static %}
   <div class="jumbotron">
     <div class="container">
       <h1 class="display-3">Reports</h1>
-      <p class="lead">The following Reports are available  
+      <p class="lead">The following Reports are available
       <dl class="row">
         <dt class="col-sm-3">Item Reports</dt>
-        <dd class="col-sm-9"> 
+        <dd class="col-sm-9">
           <ul type="none">
             <li>
               <a href="{% url 'report_itms' %}">Items</a>
@@ -19,11 +19,20 @@
               <a href="{% url 'report_whs' %}">Items organized by warehouse and box</a>
             </li>
           </ul>
-        </dd> 
+
+        </dd>
       </dl>
-     </div>
-    </div>
-  </div>
+      <dl class="row">
+        <dt class="col-sm-3">Exporting</dt>
+        <dd class="col-sm-9">
+          <ul type="none">
+            <li>
+              <a href="{% url 'report_full' %}">"Full Report" page to faciliate data exporting</a>
+            </li>
+          </ul>
+        </dd>
+      </dl>
+     </div> <!-- /container-->
   <hr>
-</div><!-- /container -->
+</div><!-- /jumbotron -->
 {% endblock %}
