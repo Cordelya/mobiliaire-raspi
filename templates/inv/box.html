@@ -3,18 +3,30 @@
 
 {% block content %}
 {% load static %}
-  
-  <h1>Box: {{ box.box_name }}</h1>
-  <p class="lead">This box is part of the {{ box.warehouse }} warehouse. It
-  contains {{ items.item_totals.icount }} items with a total value of ${{ items.item_totals.val|floatformat:2 }}.</p>
+<div class="media">
+  <img class="mr-3"
+  src="{% static 'inv/img/'|add:box.box_img %}"
+  alt="Photo of box {{ box.box_id }}"
+  caption="Box {{ box.box_id }} | {{ box.box_name }}"
+  height="300px"/>
+  <div class="media-body">
+<h1 class="m1-0">Box: {{ box.box_name }}</h1>
+<p class="lead">This box is part of the {{ box.warehouse }} warehouse. It
+contains {{ items.item_totals.icount }} items with a total value of ${{ items.item_totals.val|floatformat:2 }}.</p>
+{% with boxid=box.box_id|slugify  %}
+<p><a href="{% url 'piCapture' 'box_'|add:boxid %}" target="_blank">Try submitting a new photo of this box via the Pi Camera.</a></p>
+{% endwith %}
+</div>
+</div>
+
   <div class="row mb-3">
     {% for i in items %}
         <div class="col-md-4 themed-grid-col">
-    
+
 
       <div class="card mb-4 border-dark">
         {% if i.item_id.item_img|length > 0 %}
-        <img class="card-img-top" src="{% static 'inv/img/'|add:i.item_img %}" 
+        <img class="card-img-top" src="{% static 'inv/img/'|add:i.item_img %}"
                                   alt="Box">
         {% else %}
         <p>This item does not have an image. You can add one by taking a photo
@@ -48,5 +60,5 @@
         {% endfor %}
   </div>
 
-  
+
 {% endblock %}
