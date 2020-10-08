@@ -3,7 +3,7 @@ A Raspberry Pi flavored lightweight property inventory helper
 
 > mobiliaire (n.): Middle French form of "mobiliary"; pertaining to furniture or movable property
 
-Please see the main [Mobiliaire](https://github.com/Cordelya/mobiliaire) for information about the application. This page only details the specific features available in this fork.
+Please see the main [Mobiliaire](https://github.com/Cordelya/mobiliaire) repository for information about the application. This page only details the specific features available in this fork.
 
 ## PiCamera Support
 
