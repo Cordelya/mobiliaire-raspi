@@ -1,0 +1,37 @@
+{% extends 'inv/base.html' %}
+
+
+{% block content %}
+{% load static %}
+ <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div class="container">
+      {% if fileName %}
+      <h1 class="display-3">Photo Added for {{ fileName }}</h1>
+      <p>File name is {{ fname }}</p>
+      <p>The photo will not be automatically added to the item, box, or warehouse it is of.
+        An administrator will review all of the submitted photos and update all items, boxes,
+        and warehouses with successful captures after the event has concluded.</p>
+      <img src="{% static 'inv/img/new/'|add:fname %}" alt="Photograph
+        of item"/>
+      <p>Please verify that the image appears above. If it does not, please notify
+        the local administrator. </p>
+        <p>You may close this window/tab to return to the page you started from.</p>
+      {% else %}
+      <p class="warning">Something went wrong. If you received this error via clicking a link, please report this to the local
+        administrator, including the following information, if anything is displayed:</p>
+        <ul>
+          <li>fileName: {{ fileName }}</li>
+          <li>fname: {{ fname }}</li>
+          </ul>
+        <p>Attempting to visit this page directly may result in an error. Please only visit this page via link from the
+          Warehouse, Box, or Item page.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <hr>
+
+
+
+{% endblock %}

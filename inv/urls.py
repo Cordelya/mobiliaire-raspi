@@ -23,4 +23,6 @@ urlpatterns = [
         path('reports/full/', views.report_full, name='report_full'),
         path('keyword/', views.keywords, name='keywords'),
         path('keyword/<str:kw_slug>/', views.keywords, name='keyword'),
+        path('capture/<str:fileName>/', views.cameraCapture, name='piCapture'),
+        path('capture/<str:fileName>/<str:fname>/', views.cameraCapture, name='pi_success'),
         ]
