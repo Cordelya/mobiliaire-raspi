@@ -2,7 +2,7 @@
 
 
 {% block content %}
-{% load static %} 
+{% load static %}
  <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
     <div class="container">
@@ -17,6 +17,10 @@
       to contribute, please snap a photo and email it to the site contact with
       a subject line of "Property database photo for item {{ item.item_id }}"
       so we can add it (and so we know which database entry to add it to!).
+      </p>
+      {% with itemid=item.item_id|slugify  %}
+      <p><a href="{% url 'piCapture' 'item_'|add:itemid %}" target="_blank">Try submitting a new photo via the Pi Camera.</a></p>
+      {% endwith %}
       {% endif %}
     </div>
   </div>
@@ -36,12 +40,12 @@
         {% else %}
         Consumable: No<br/>
         {% endif %}
-        </p> 
+        </p>
       </div>
     </div>
   </div>
   <hr>
 </div><!-- /container -->
 
-  
+
 {% endblock %}

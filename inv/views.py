@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Warehouse, Boxes, Items, Staff, Items_in_boxes, Keywords, Keywords_in_items, Inventory
 from django.db.models import Count, Sum, Q, F, DecimalField, FloatField, IntegerField, ExpressionWrapper
 from django.db.models.functions import Lower
 from decimal import Decimal
+from picamera import PiCamera
+from time import sleep
+from datetime import datetime
 
 def index(request):
     item_count = Items.objects.all().annotate(Count("item_id"))
@@ -119,3 +122,18 @@ def keywords(request, kw_slug=None):
     else:
         kw = Keywords.objects.all()
         return render(request, 'inv/keywords.html', {'kw' : kw})
+
+def cameraCapture(request, fileName=None, fname=None):
+    if fname:
+        return render(request, 'inv/photo.html', {'fileName' : fileName, 'fname' : fname})
+    elif fileName:
+        date_time = datetime.now()
+        fname = fileName + '_' + str(datetime.now()) + '.jpg'
+        fname = str(fname)
+        camera = PiCamera()
+        camera.start_preview()
+        sleep(5)
+        camera.capture('/home/pi/Apps/mobiliaire/static/inv/img/new/%s' % fname)
+        camera.stop_preview()
+        camera.close()
+        return redirect('/capture/%s/%s/' % (fileName, fname))
