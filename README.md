@@ -20,5 +20,4 @@ $ raspistill -o testshot.jpg
 ````
 If the camera is properly attached, you will see the camera preview for a few seconds, then it will disappear, and a photo named "testshot.jpg" should appear in the folder where you ran the test. You can remove the test photo once you have confirmed that it is there. 
 
-Follow the install procedure in [Mobiliaire Wiki: Getting Started](https://github.com/Cordelya/mobiliaire/wiki/getStarted), but instead of `$ git clone http://github.com/Cordelya/mobiliaire.git` you will do `$ git clone [http://github.com/Cordelya/mobiliaire-raspi.git]`
-
+Follow the install procedure in [Mobiliaire Wiki: Getting Started](https://github.com/Cordelya/mobiliaire/wiki/getStarted), but instead of `$ git clone http://github.com/Cordelya/mobiliaire.git` you will do `$ git clone http://github.com/Cordelya/mobiliaire-raspi.git`
