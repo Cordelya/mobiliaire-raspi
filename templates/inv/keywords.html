@@ -41,7 +41,10 @@
           {% if i.item_img|length > 0 %}
             <img class="card-img"
                src="{% static 'inv/img/'|add:i.item_img %}" alt="Photo of Item">
-            {% else %}<p class="alert alert-warning text-center">A photo of this item does not exist.</p>
+            {% else %}<p class="alert alert-warning text-center">A photo of this item does not exist.<br/>
+            {% with itemid=item.item_id|slugify  %}
+      <a href="{% url 'piCapture' 'item_'|add:itemid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+      {% endwith %}
             {% endif %}
 
             <p class="card-text">

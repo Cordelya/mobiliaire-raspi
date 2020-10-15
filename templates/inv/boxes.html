@@ -20,7 +20,7 @@
         <div class="card-header"> <h5 class="card-title">{{ b.box_name }} <a class="card-link badge badge-pill badge-primary float-right" href="{% url 'box' b.box_id %}">View</a></h5></div>
         <img class="card-img-top img-responsive" src="{% static 'inv/img/'|add:b.box_img %}" alt="Box Designator">
         {% with boxid=b.box_id|slugify  %}
-      <p><a href="{% url 'piCapture' 'box_'|add:boxid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+      <p class="text-center"><a href="{% url 'piCapture' 'box_'|add:boxid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
       {% endwith %}
         <div class="card-body">
           <p class="card-text">This box is part of the {{ b.warehouse }} warehouse.</p>

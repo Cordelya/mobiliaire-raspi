@@ -24,7 +24,7 @@
         <img class="card-img-top img img-fluid" src="{% static 'inv/img/'|add:w.warehouse_img %}"
           alt="Warehouse Designator">
           {% with whid=w.warehouse_id|slugify  %}
-      <p><a href="{% url 'piCapture' 'wh_'|add:whid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+      <p class="text-center"><a href="{% url 'piCapture' 'wh_'|add:whid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
       {% endwith %}
                  <div class="card-body">
                    {% if w.warehouse_loc %}

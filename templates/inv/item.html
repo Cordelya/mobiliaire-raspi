@@ -59,7 +59,7 @@
         so we can add it (and so we know which database entry to add it to!).
 
       {% with itemid=item.item_id|slugify  %}
-      <p><a href="{% url 'piCapture' 'item_'|add:itemid %}" target="_blank">Try submitting a new photo via the Pi Camera.</a></p>
+      <p class="alert-text text-center"><a href="{% url 'piCapture' 'item_'|add:itemid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
       {% endwith %}
         </div><!-- /alert-warning-->
       {% endif %}

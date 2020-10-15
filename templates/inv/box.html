@@ -40,11 +40,11 @@
         <img class="card-img" src="{% static 'inv/img/'|add:i.item_img %}"
                                   alt="Box">
         {% else %}
-        <p class="alert alert-warning text-center">This item does not have an image.</p>
+        <p class="alert alert-warning text-center">This item does not have an image.<br/>
 
         <!-- pi camera link -->
         {% with itemid=i.item_id.item_id|slugify  %}
-        <p><a href="{% url 'piCapture' 'item_'|add:itemid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+        <a href="{% url 'piCapture' 'item_'|add:itemid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
         {% endwith %}
         <!-- end pi camera link -->
 

@@ -35,7 +35,7 @@ height="300px"/>
       </div><!-- /card-header -->
       <img class="img card-img-top img-responsive" src="{% static 'inv/img/'|add:b.box_img %}" alt="Box Designator">
       {% with boxid=b.box_id|slugify  %}
-      <p><a href="{% url 'piCapture' 'box_'|add:boxid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+      <p class="text-center"><a href="{% url 'piCapture' 'box_'|add:boxid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
       {% endwith %}
         <div class="card-body">
 
