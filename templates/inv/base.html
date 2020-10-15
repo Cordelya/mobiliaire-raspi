@@ -13,7 +13,8 @@
 <!-- Bootstrap CSS bundle -->
 <link rel="stylesheet" href="{% static 'inv/css/bootstrap.min.css' %}">
 <!-- Datatables CSS Bundle -->
-<link rel="stylesheet" type="text/css" href="{% static 'inv/css/dataTables.bootstrap4.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'inv/DataTables/datatables.min.css' %}"/>
+
 
     <style>
       .bd-placeholder-img {
@@ -93,12 +94,21 @@
 
 </main>
 
-<footer class="container">
-  <p>mobiliaire (n.): Middle French form of "mobiliary"; pertaining to furniture or movable property</p>
+<footer>
+  <div class="row">
+    <div class="col-md-12 py-1">
+    <hr>
+    </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+  <p class="text-center">mobiliaire (n.): Middle French form of "mobiliary"; pertaining to furniture or movable property</p>
+</div>
+</div>
 </footer>
 <script type="text/javascript" src="{% static 'inv/js/jquery-3.5.1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'inv/js/bootstrap.bundle.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'inv/js/datatables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'inv/DataTables/datatables.min.js' %}"></script>
 <!-- custom js scripts -->
 <script type="module" src="{% static 'inv/js/index.js' %}"></script>
 </body>

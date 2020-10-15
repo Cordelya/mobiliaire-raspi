@@ -3,62 +3,94 @@
 
 {% block content %}
 {% load static %}
-<div class="media">
-  <img class="mr-3"
-  src="{% static 'inv/img/'|add:box.box_img %}"
+
+<div class="row px-5">
+  <div class="col-md-12 p-3 border-bottom border-dark">
+  <div class="media">
+
+    <div class="media-body">
+  <h1>Box: {{ box.box_name }}</h1>
+  <p class="lead">This box is part of the {{ box.warehouse }} warehouse. It
+  contains {{ items.item_totals.icount }} item{{ items.item_totals.icount|pluralize }} with a total value of ${{ items.item_totals.val|floatformat:2 }}.</p>
+  <!-- pi camera link -->
+  {% with boxid=box.box_id|slugify  %}
+  <p><a href="{% url 'piCapture' 'box_'|add:boxid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+  {% endwith %}
+  <!-- end pi camera link -->
+  </div><!-- /media-body-->
+
+  <img class="img figure-img img-fluid" src="{% static 'inv/img/'|add:box.box_img %}"
   alt="Photo of box {{ box.box_id }}"
-  caption="Box {{ box.box_id }} | {{ box.box_name }}"
-  height="300px"/>
-  <div class="media-body">
-<h1 class="m1-0">Box: {{ box.box_name }}</h1>
-<p class="lead">This box is part of the {{ box.warehouse }} warehouse. It
-contains {{ items.item_totals.icount }} items with a total value of ${{ items.item_totals.val|floatformat:2 }}.</p>
-{% with boxid=box.box_id|slugify  %}
-<p><a href="{% url 'piCapture' 'box_'|add:boxid %}" target="_blank">Try submitting a new photo of this box via the Pi Camera.</a></p>
-{% endwith %}
-</div>
-</div>
+  caption="Box {{ box.box_id }} | {{ box.box_name }}" style="height: 300px"/>
 
-  <div class="row mb-3">
+  </div><!-- /media-->
+</div><!--col-->
+
+  </div><!--/row-->
+  <div class="row p-3">
     {% for i in items %}
-        <div class="col-md-4 themed-grid-col">
+        <div class="col-md-4 my-2 themed-grid-col">
 
 
-      <div class="card mb-4 border-dark">
+      <div class="card mb-4 border-dark d-flex align-items-stretch h-100">
+        <div class="card-header">
+        <h5 class="card-title">{{ i.item_id.item_name }}<a class="card-link badge badge-pill badge-primary float-right" href="{% url 'item' i.item_id.item_id %}">View</a></h5>
+        </div>
         {% if i.item_id.item_img|length > 0 %}
-        <img class="card-img-top" src="{% static 'inv/img/'|add:i.item_img %}"
+        <img class="card-img" src="{% static 'inv/img/'|add:i.item_img %}"
                                   alt="Box">
         {% else %}
-        <p>This item does not have an image. You can add one by taking a photo
-        of the item and emailing it to the site contact, with <em>Subject: Photo
-        for Inventory item #{{ i.item_id.item_id }}.</em></p>
+        <p class="alert alert-warning text-center">This item does not have an image.<br/>
+
+        <!-- pi camera link -->
+        {% with itemid=i.item_id.item_id|slugify  %}
+        <a href="{% url 'piCapture' 'item_'|add:itemid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+        {% endwith %}
+        <!-- end pi camera link -->
+
         {% endif %}
                   <div class="card-body">
-                    <h5 class="card-title">{{ i.item_id.item_name }}</h5>
-                     <p class="card-text">
-                        Item description: {{ i.item_id.item_desc }}<br/>
-                        Quantity: {{ i.item_id.item_qty }}<br/>
-                        Value (each): {{ i.item_id.item_value|floatformat:2 }}<br/>
-                        {% if i.item_id.item_qty > 1 %}
-                        Value (total): {{ i.totval|floatformat:2 }}<br/>
-                        {% endif %}
-                        {% if i.item_id.item_consumable == True %}
-                        Consumable: Yes<br/>
-                        Percent Remaining: {{ i.item_id.item_remaining }}&#37;<br/>
-                        {% else %}
-                        Consumable: No<br/>
-                        {% endif %}
+                    <ul class="list-group list-group-flush" type="none">
+                    <li>Description: {{ i.item_id.item_desc }}</li>
+                    <li>Quantity: {{ i.item_id.item_qty }}</li>
+                  <li>Value (each): &#36;{{ i.item_id.item_value|floatformat:2 }}</li>
+                  {% if i.item_id.item_qty > 1 %}
+                  {% if i.item_id.totval %}
+                    <li>Value (total): &#36;{{ i.item_id.totval|floatformat:2 }}</li>
+                    {% endif %}
+                  {% endif %}
+                  <li>
+                  {% if i.item_id.consumable == True %}
+                  <ul>
+                    <li>Consumable: Yes</li>
+                    <li>Percent Remaining: {{ i.item_id.item_remaining }}&#37;</li>
+                    </ul>
+                  {% else %}
+                    Consumable: No
+                  {% endif %}
+                  </li>
+                  {% if i.item_id.kw_itm %}
+                  <li>Keywords:
+                    <ul>
+                    {% for k in i.item_id.kw_itm.all %}
+                      <li>
+                      <a class="card-link" href="{% url 'keyword' k.keyword_id|slugify %}">{{ k.keyword_id }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                  </li>
+                  {% endif %}
 
-                     </p>
-                     <a href="{% url 'item' i.item_id.item_id %}" class="btn btn-dark btn-sm">View</a>
-                  </div>
-      </div>
-    </div>
+                  </div><!-- /card-body-->
+
+                  </div><!-- /card-->
+      </div><!-- /col-->
+
 
 
 
         {% endfor %}
-  </div>
+  </div><!-- /row-->
 
 
 {% endblock %}

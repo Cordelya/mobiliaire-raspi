@@ -3,11 +3,18 @@
 
 {% block content %}
 {% load static %}
-
+<div class="container-fluid">
+<div class="row p-3">
+  <div class="col-md-11 offset-1">
 <h1>Consumables List</h1>
-<p class="small">Print this and take it shopping with you!</p>
-<p>Tip: Order the table by Restock Qty to bring restock items to the top, then click "Print" and limit the print job to only pages with less than 100% remaining.</p>
-<table class="table">
+<p class="lead">Print this and take it shopping with you!</p>
+<p>Tip: Use the Search Builder to get a customized shopping list.
+   Click "Add Condition", select "Restock Qty" in the first menu, NOT in the second, and "Buy 0" in the third. Then, click "Print" and off you go!</p>
+</div><!--col-->
+</div><!--row-->
+<div class="row">
+<div class="col-md-12 p-3 border border-dark">
+<table class="table t2 dt-responsive">
   <thead>
     <th scope="col">Item ID</th>
     <th scope="col">Item Name</th>
@@ -36,5 +43,7 @@
     </tr>
     {% endfor %}
 </table>
-  <hr>
+  </div>
+  </div>
+  </div>
   {% endblock %}

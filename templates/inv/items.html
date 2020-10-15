@@ -4,64 +4,85 @@
 {% block content %}
 {% load static %}
 <div class="container-fluid clearfix">
-  <div class="col-md-8 offset-2"><h1>Items</h1>
-  <p class="lead">There are {{ items|length }} items in this collection.</p>
-  </div>
+  <div class="row my-3">
+  <div class="col-md-8 offset-2"><h1 class="mx-4">Items</h1>
+  <p class="lead mx-4">There are {{ items|length }} items in this collection.</p>
+  </div><!--col -->
+  </div><!--row-->
 <!-- sidebar -->
 <nav class="sidebar col-md-2 float-left">
-<h4>Filter by Keyword</h4>
-<p class="lead remove">Start Over</p>
-<ul type="none" class="list">
+<h4 class="text-center">Filter by Keyword</h4>
+<div class="list-group list-group-flush mx-1">
+<button class="lead remove list-group-item list-group-item-warning py-1 ">Reset</button>
+</div>
+<hr>
+<div class="list-group list-group-flush mx-1">
+
   {% for k in kw %}
-  <li class="neutral kw {{ k.keyword|slugify }}">{{ k.keyword }}</li>
+  <button class="list-group-item list-group-item-primary neutral kw {{ k.keyword|slugify }} py-1">{{ k.keyword }}</button>
   {% endfor %}
-</ul>
+</div>
 </nav>
 <main role="main" class="col-md-10 float-right">
 
   <div class="row mb-3">
     {% for i in items %}
 
-       <div class="col-md-4 themed-grid-col item {% for k in i.kw_itm.all %} {{ k.keyword_id|slugify }}{% endfor %}">
-        <div class="card mb-4 border-dark show">
+       <div class="col-md-4 my-2 themed-grid-col item {% for k in i.kw_itm.all %} {{ k.keyword_id|slugify }}{% endfor %}">
+        <div class="card mb-4 border-dark show d-flex align-items-stretch h-100">
+          <div class="card-header">
+          <h5 class="card-title">{{ i.item_name }}<a class="card-link badge badge-pill badge-primary float-right" href="{% url 'item' i.item_id %}">View</a></h5>
+          </div>
           {% if i.item_img|length > 0 %}
-            <img class="card-img-top"
+            <img class="card-img-top img-responsive"
                src="{% static 'inv/img/'|add:i.item_img %}" alt="Photo of Item">
-            {% else %}<p>A photo of this item does not exist.</p>
+            {% else %}<p class="alert alert-warning text-center">A photo of this item does not exist.<br/>
+            {% with itemid=i.item_id|slugify  %}
+      <a href="{% url 'piCapture' 'item_'|add:itemid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+      {% endwith %}
             {% endif %}
-            <h5 class="card-title">{{ i.item_name }}</h5>
-            <p class="card-text">
-            Description: {{ i.item_desc }}<br/>
-            Location:
-            <ul>
-              <li>Warehouse: <a href="{% url 'warehouse' i.whid %}">{{ i.whid }} | {{ i.wh }}</a></li>
-              <li>Box: <a href="{% url 'box' i.boxid %}">{{ i.boxid }} | {{ i.box }}</a></li>
-            </ul>
-            Quantity: {{ i.item_qty }} <br/>
-            Value (each): {{ i.item_val|floatformat:2 }} <br/>
-            {% if i.qty > 1 %}
-              Value (total): {{ i.totval|floatformat:2 }} <br/>
-            {% endif %}
-            {% if i.consumable == True %}
-              Consumable: Yes<br/>
-              Percent Remaining: {{ i.item_remaining }}&#37;<br/>
-            {% else %}
-              Consumable: No<br/>
-            {% endif %}
-            {% if i.kw_itm %}
-            Keywords:
+          <div class="card-body">
 
+
+
+              <ul class="list-group list-group-flush" type="none">
+              <li>Description: {{ i.item_desc }}</li>
+            <li>Location:
             <ul>
-              {% for k in i.kw_itm.all %}
-                <li>
-                <a href="{% url 'keyword' k.keyword_id|slugify %}">{{ k.keyword_id }}</a>
-                </li>
-              {% endfor %}
+              <li>Warehouse: <a class="card-link" href="{% url 'warehouse' i.whid %}">{{ i.whid }} | {{ i.wh }}</a></li>
+              <li>Box: <a class="card-link" href="{% url 'box' i.boxid %}">{{ i.boxid }} | {{ i.box }}</a></li>
             </ul>
+            </li>
+            <li>Quantity: {{ i.item_qty }}</li>
+            <li>Value (each): &#36;{{ i.item_value|floatformat:2 }}</li>
+            {% if i.item_qty > 1 %}
+              <li>Value (total): &#36;{{ i.totval|floatformat:2 }}</li>
             {% endif %}
-            <a href="{% url 'item' i.item_id %}" class="btn btn-dark
-                   btn-sm">View</a>
-            </p>
+            <li>
+            {% if i.consumable == True %}
+            <ul>
+              <li>Consumable: Yes</li>
+              <li>Percent Remaining: {{ i.item_remaining }}&#37;</li>
+              </ul>
+            {% else %}
+              Consumable: No
+            {% endif %}
+            </li>
+
+
+            </div>
+            <div class="card-footer">
+              {% if i.kw_itm %}
+              <ul class="list list-inline">
+                {% for k in i.kw_itm.all %}
+                  <li class="list-inline-item">
+                  <a class="card-link" href="{% url 'keyword' k.keyword_id|slugify %}">{{ k.keyword_id }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            </div>
         </div>
       </div>
     {% endfor %}

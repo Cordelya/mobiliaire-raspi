@@ -7,7 +7,8 @@
   <div class="jumbotron">
     <div class="container">
       <h1 class="display-3">Hello!</h1>
-      <p>Welcome to the Mobiliaire Inventory Manager! There are {{ item_count.count }} items in {{ box_count.count }} boxes across {{ warehouse_count.count }} warehouses. The estimated total replacement value of all items is ${{ val.item_value__sum|floatformat:2 }}.</p>
+      <p class="lead">Welcome to the Mobiliaire Inventory Manager!</p> 
+        <p>There are {{ item_count.count }} items in {{ box_count.count }} boxes across {{ warehouse_count.count }} warehouses.<br/>The estimated total replacement value of all items is ${{ val.val|floatformat:2 }}.</p>
       <!-- commented out because it doesn't do anything, but preserved for when there's front-end documentation -->
       <!-- <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p> -->
     </div>
