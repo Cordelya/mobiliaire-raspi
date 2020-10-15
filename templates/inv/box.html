@@ -12,16 +12,17 @@
   <h1>Box: {{ box.box_name }}</h1>
   <p class="lead">This box is part of the {{ box.warehouse }} warehouse. It
   contains {{ items.item_totals.icount }} item{{ items.item_totals.icount|pluralize }} with a total value of ${{ items.item_totals.val|floatformat:2 }}.</p>
-  </div><!-- /media-body-->
-
-  <img class="img figure-img img-fluid" src="{% static 'inv/img/'|add:box.box_img %}"
-  alt="Photo of box {{ box.box_id }}"
-  caption="Box {{ box.box_id }} | {{ box.box_name }}" style="height: 300px"/>
   <!-- pi camera link -->
   {% with boxid=box.box_id|slugify  %}
   <p><a href="{% url 'piCapture' 'box_'|add:boxid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
   {% endwith %}
   <!-- end pi camera link -->
+  </div><!-- /media-body-->
+
+  <img class="img figure-img img-fluid" src="{% static 'inv/img/'|add:box.box_img %}"
+  alt="Photo of box {{ box.box_id }}"
+  caption="Box {{ box.box_id }} | {{ box.box_name }}" style="height: 300px"/>
+
   </div><!-- /media-->
 </div><!--col-->
 
