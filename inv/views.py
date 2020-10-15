@@ -12,7 +12,7 @@ def index(request):
     item_count = Items.objects.all().annotate(Count("item_id"))
     box_count = Boxes.objects.all().annotate(Count("box_id"))
     warehouse_count = Warehouse.objects.all().annotate(Count("warehouse_id"))
-    val = Items.objects.all().aggregate(Sum("item_value"))
+    val = Items.objects.all().annotate(ival=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).aggregate(val=Sum("ival"))
     return render(request, 'inv/index.html', {'item_count' : item_count, 'box_count' : box_count, 'warehouse_count' : warehouse_count, 'val' : val })
 
 def dash(request):
@@ -80,7 +80,7 @@ def item(request, itemid):
     box = Items_in_boxes.objects.filter(item_id=itemid).filter(date_to__isnull=True).annotate(name=F('box_id__box_name')).annotate(bx_id=F('box_id')).get(item_id=itemid)
     wh = Boxes.objects.filter(box_id=box.bx_id).annotate(name=F('warehouse__warehouse_name')).get(box_id=box.bx_id)
     kw = Keywords_in_items.objects.filter(item_id=itemid)
-    return render(request, 'inv/item.html', {'item' : item , 'box' : box, 'wh' : wh })
+    return render(request, 'inv/item.html', {'item' : item , 'box' : box, 'wh' : wh, 'kw' : kw})
 
 def boxes(request):
     boxes = Boxes.objects.all().annotate(num_items=Count('bx_id__item_id', filter=Q(bx_id__date_to__isnull=True)))
@@ -88,7 +88,7 @@ def boxes(request):
 
 def box(request, boxid):
     box = Boxes.objects.prefetch_related('warehouse').get(box_id=boxid)
-    items = Items_in_boxes.objects.prefetch_related().filter(date_to__isnull=True).filter(box_id=boxid).annotate(item_img=F('item_id__item_img'), totval=Sum(F('item_id__item_value')*F('item_id__item_qty'), output_field=FloatField()))
+    items = Items_in_boxes.objects.prefetch_related().filter(date_to__isnull=True).filter(box_id=boxid).annotate(item_img=F('item_id__item_img')).annotate(totval=Sum(F('item_id__item_value')*F('item_id__item_qty'), output_field=FloatField()))
     items.item_totals = Items_in_boxes.objects.filter(date_to__isnull=True).filter(box_id=boxid).aggregate(icount=Count('item_id'), val=Sum('item_id__item_value'))
     return render(request, 'inv/box.html', {'box' : box, 'items': items})
 
@@ -120,8 +120,9 @@ def keywords(request, kw_slug=None):
         items = Items.objects.prefetch_related().filter(kw_itm__keyword__keyword_slug=kw_slug).annotate(box=F('itm_id__box_id__box_name')).annotate(boxid=F('itm_id__box_id')).annotate(wh=F('itm_id__box_id__warehouse__warehouse_name')).annotate(whid=F('itm_id__box_id__warehouse')).annotate(totval=Sum(F('item_value')*F('item_qty'), output_field=FloatField())).annotate(sort_name=Lower('item_name')).order_by('sort_name')
         return render(request, 'inv/keywords.html', {'keyword' : keyword, 'kw' : kw , 'items' : items})
     else:
-        kw = Keywords.objects.all()
+        kw = Keywords.objects.all().prefetch_related().annotate(tot=Count('kw_kw__item_id'))
         return render(request, 'inv/keywords.html', {'kw' : kw})
+
 
 def cameraCapture(request, fileName=None, fname=None):
     if fname:

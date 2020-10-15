@@ -37,7 +37,7 @@
     {% for b in box %}
       {% if w.warehouse_id == b.whid %}
 
-        <table id="box-{{ b.box_id }}" class=" table table-striped
+        <table id="box-{{ b.box_id }}" class="t1 table table-striped
           table-responsive whtable">
           <caption><a href="{% url 'report_box' b.box_id %}">Box {{ b.box_id }} | {{ b.box_name }}</a></caption>
           <thead class="thead-dark">

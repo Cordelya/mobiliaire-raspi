@@ -3,23 +3,25 @@
 
 {% block content %}
 {% load static %}
-<div class="container-fluid">
 
-<div class="row border-top border-bottom">
-  <div class="col-md-8 offset-2">
+
+<div class="px-5 mb-3">
+  <div class="col-md-12">
     <h1>Full Report for Export</h1>
-      <p class="lead">Arranged using fewer tables to facilitate print/export to file as backup or hard copy.</p>
+      <p>Arranged using fewer tables to facilitate print/export to file as backup or hard copy.</p>
       <p>Rows will be exported regardless of how many rows appear at one time (paging). Filtered rows will only export the filter results.</p>
   </div>
 </div><!-- end heading row -->
-<div class="row my-2">
-  <div class="col-md-8 offset-2">
+<div class="container-fluid">
+<div class="row"><!-- warehouse row -->
+  <div class="col-md-12">
+
     <!-- Warehouse List -->
-    <div class="table-responsive">
-      <table class="table table-responsive table-striped border rounded w-100">
+    <div class="table-responsive p-2">
+      <table class="t1 table table-striped border rounded w-100">
         <caption style="caption-side:top">Table 1 | Warehouse List</caption>
         <thead>
-        <tr class="wh-color wh-color-text"><th>Warehouse ID</th><th>Warehouse Name</th><th>Warehouse Details</th><th>Box Count</th></tr>
+        <tr><th>Warehouse ID</th><th>Warehouse Name</th><th>Warehouse Details</th><th>Box Count</th></tr>
         </thead>
         <tbody>
         {% for w in wh %}
@@ -28,17 +30,17 @@
         </tbody>
       </table>
       </div><!-- /table div -->
-    </div>
+    </div><!--col-->
 </div><!-- end warehouse row -->
-<div class="row my-1">
-  <div class="col-md-6 clearfix">
+<div class="row">
+  <div class="col-md-6">
 
       <!-- boxes by id -->
-      <div class="table-responsive">
-      <table class="table table-responsive table-striped border rounded m-1 width:100%">
+      <div class="table-responsive d-flex align-items-stretch w-100 h-100 p-2">
+      <table class="t1 table table-striped border rounded">
         <caption style="caption-side:top">Table 2 | Boxes by Box Number</caption>
         <thead>
-        <tr class="box-color box-color-text"><th>Box ID</th><th>Box Name</th><th>Box Description</th><th>Warehouse ID</th></tr>
+        <tr><th>Box ID</th><th>Box Name</th><th>Box Description</th><th>Warehouse ID</th></tr>
         </thead>
         <tbody>
         {% for b in box %}
@@ -49,13 +51,13 @@
       </div><!--/table div-->
   </div>
 
-  <div class="col-md-6 clearfix">
+  <div class="col-md-6">
         <!-- Boxes by alpha -->
-        <div class="table-responsive">
-        <table class="table table-striped border rounded m-1 width:100%">
+        <div class="table-responsive d-flex align-items-stretch w-100 h-100 p-2">
+        <table class="t1 table table-striped border rounded">
           <caption style="caption-side:top">Table 3 | Boxes by Box Name</caption>
         <thead>
-          <tr class="box-color box-color-text"><th>Box ID</th><th>Box Name</th><th>Box Description</th><th>Warehouse ID</th></tr>
+          <tr><th>Box ID</th><th>Box Name</th><th>Box Description</th><th>Warehouse ID</th></tr>
         </thead>
         <tbody>
           {% for b in box_alpha %}
@@ -74,11 +76,11 @@
   <div class="row">
     <div class="md-col-12">
   <!-- begin warehouse/box/item listing -->
-    <div class="table-responsive">
-    <table class="table table-striped border rounded clearfix">
+    <div class="table-responsive d-flex align-items-stretch w-100 h-100 p-2">
+    <table class="t1 table table-striped border rounded">
       <caption style="caption-side:top">Table 4 | Items By Warehouse and Box</caption>
     <thead>
-      <tr class="item-color item-color-text">
+      <tr>
       <th>Wh. ID</th>
       <th>Box ID</th>
       <th>Item ID</th>
@@ -131,5 +133,5 @@
 <p class="text-center"> Report Generated on {% now "l, F jS, Y" %}</p>
 </div>
 </div>
-  </div>
+</div><!--container-->
 {% endblock %}

@@ -3,29 +3,41 @@
 
 {% block content %}
 {% load static %}
-  <!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="row my-3">
+  <div class="col-md-11 offset-1">
   <h1>Boxes</h1>
   <p class="lead">A Box holds a collection of Items.</p>
+  </div><!--col-->
+  </div><!--row-->
+
+<div class="container mx-auto no-gutters" style="max-width: 90%">
   <div class="row mb-3">
     {% for b in boxes %}
     <div class="col-md-4 themed-grid-col">
-    
+
 
       <div class="card mb-4 border-dark">
-        <img class="card-img-top" src="{% static 'inv/img/'|add:b.box_img %}" alt="Box Designator">
-                  <div class="card-body">
-                     <h5 class="card-title">{{ b.box_name }}</h5>
-                     <p class="card-text">This box is part of the {{ b.warehouse }} warehouse. 
-                     There are {{ b.num_items }} items attached to this box.</p>
-                     <a href="{% url 'box' b.box_id %}" class="btn btn-dark btn-sm">View</a>
-                  </div>
-      </div>
-    </div>
+        <div class="card-header"> <h5 class="card-title">{{ b.box_name }} <a class="card-link badge badge-pill badge-primary float-right" href="{% url 'box' b.box_id %}">View</a></h5></div>
+        <img class="card-img-top img-responsive" src="{% static 'inv/img/'|add:b.box_img %}" alt="Box Designator">
+        {% with boxid=b.box_id|slugify  %}
+      <p><a href="{% url 'piCapture' 'box_'|add:boxid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+      {% endwith %}
+        <div class="card-body">
+          <p class="card-text">This box is part of the {{ b.warehouse }} warehouse.</p>
+        </div>
+        <div class="card-footer">
+          {% if b.num_items > 1 %}
+            <p class="card-text">There are {{ b.num_items }} items attached to this box.</p>
+          {% elif b.num_items == 1 %}
+            <p class="card-text">There is {{ b.num_items }} item attached to this box.</p>
+          {% else %}
+            <p class="card-text">There are no items attached to this box.</p>
+          {% endif %}
+        </div><!-- /card-footer -->
+      </div><!-- /card -->
+    </div><!-- /column -->
+    {% endfor %}<!-- b in boxes -->
+  </div><!-- /row -->
 
-
-
-        {% endfor %}
-  </div>
-
-  
+</div><!-- /container -->
 {% endblock %}

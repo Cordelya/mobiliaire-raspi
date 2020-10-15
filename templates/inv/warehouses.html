@@ -3,31 +3,55 @@
 
 {% block content %}
 {% load static %}
-
+<div class="row my-3">
+  <div class="col-md-11 offset-1">
+    <h1>Warehouses</h1>
+    <p class="lead">A Warehouse is a Collection of Boxes.</p>
+    </div><!--col-->
+    </div><!--row-->
+<div class="container mx-auto no-gutters" style="max-width: 90%">
   <!-- Main jumbotron for a primary marketing message or call to action -->
-  <h1>Warehouses</h1>
-  <p class="lead">A Warehouse is a Collection of Boxes.</p>
+
   <div class="row mb-3">
     {% for w in wh %}
     <div class="col-md-4 themed-grid-col">
-    
+
 
       <div class="card mb-4 border-dark">
-        <img class="card-img-top" src="{% static 'inv/img/'|add:w.warehouse_img %}" 
-          alt="Warehouse Designator" size="75%">
+        <div class="card-header">
+          <h5 class="card-title">{{ w.warehouse_name }} <a class="card-link badge badge-pill badge-primary float-right" href="{% url 'warehouse' w.warehouse_id %}" class="btn btn-dark btn-sm">View</a></h5>
+          </div><!-- /card-header -->
+        <img class="card-img-top img img-fluid" src="{% static 'inv/img/'|add:w.warehouse_img %}"
+          alt="Warehouse Designator">
+          {% with whid=w.warehouse_id|slugify  %}
+      <p><a href="{% url 'piCapture' 'wh_'|add:whid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+      {% endwith %}
                  <div class="card-body">
-                     <h5 class="card-title">{{ w.warehouse_name }}</h5>
-                     <p class="card-text">This warehouse is located at {{ w.warehouse_loc }}. 
-                     There are {{ w.num_boxes }} boxes attached to this warehouse.</p>
-                     <a href="{% url 'warehouse' w.warehouse_id %}" class="btn btn-dark btn-sm">View</a>
-                  </div>
-      </div>
-    </div>
+                   {% if w.warehouse_loc %}
+                     <p class="card-text">This warehouse is located at {{ w.warehouse_loc }}.</p>
+                  {% endif %}
+                  {% if w.warehouse_details %}
+                  <p class="card-text">{{ w.warehouse_details }}
+                  {% endif %}
+
+                  </div><!-- /card-body -->
+                  <div class="card-footer">
+{% if w.num_boxes > 1 %}
+<p class="card-text">There are {{ w.num_boxes }} boxes attached to this warehouse.</p>
+{% elif w.num_boxes == 1 %}
+<p class="card-text">There is {{ w.num_boxes }} box attached to this warehouse.</p>
+{% else %}
+<p class="card-text">There are no boxes attached to this warehouse.</p>
+{% endif %}
+
+                    </div><!-- /card-footer -->
+      </div><!-- /card -->
+    </div><!-- /col -->
 
 
 
         {% endfor %}
-  </div>
+  </div><!-- /row -->
+</div><!-- /container -->
 
-  
 {% endblock %}

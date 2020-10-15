@@ -5,39 +5,45 @@
 {% load static %}
 <div class="container-fluid clearfix">
 
-
-<main role="main" class="main">
-
   {% if not items %}
-  <div class="col-md-8 offset-2"><h1>Keywords</h1>
+  <div class="row px-5">
+  <div class="col-md-12 p-3 border-bottom border-dark"><h1">Keywords</h1>
   <p class="lead">There are {{ kw|length }} keywords in this collection.</p>
-  </div>
-  <div class="row mb-3">
+  </div><!--col-->
+  </div><!--row-->
+  <div class="row">
     {% for k in kw %}
-    <div class="col-md-3">
-      <p><a href="{% url 'keyword' k.keyword_slug %}">{{ k.keyword }}</a>
+    <div class="col-md-2 py-3">
+      <a href="{% url 'keyword' k.keyword_slug %}">
+        <button class="btn btn-primary d-flex align-items-stretch w-100 justify-content-between align-items-center">{{ k.keyword }} <span class="badge badge-light badge-pill text-dark">{{ k.tot }}</span></button>
+      </a>
     </div>
     {% endfor %}
   </div>
   {% endif %}
 {% if items %}
+<div class="row px-5">
+<div class="col-md-12 p-3 border-bottom border-dark">
+  <h1>{{ keyword.keyword }}</h1>
 
-  <div class="col-md-8 offset-2"><h1>Keyword Filter</h1>
+  <p class="lead">There are {{ items|length }} items tagged with this keyword.</p>
+  <p><a href="{% url 'keywords' %}">List all Keywords</a></p>
 
-  <p class="lead">There are {{ items|length }} items tagged with <em>{{ keyword.keyword }}</em>.</p>
-
-  </div>
-  <div class="row mb-3">
+  </div><!--col-->
+  </div><!--row-->
+  <div class="row p-3">
     {% for i in items %}
 
-       <div class="col-md-4 themed-grid-col item {% for k in i.kw_itm.all %} {{ k.keyword_id|slugify }}{% endfor %}">
-        <div class="card mb-4 border-dark show">
+       <div class="col-md-4 my-2 themed-grid-col item {% for k in i.kw_itm.all %} {{ k.keyword_id|slugify }}{% endfor %}">
+        <div class="card mb-4 border-dark show d-flex align-items-stretch h-100">
+          <div class="card-header"><h5 class="card-title">{{ i.item_name }} <a href="{% url 'item' i.item_id %}" class="card-link badge badge-pill badge-primary float-right">View</a></h5>
+          </div><!--card-header-->
           {% if i.item_img|length > 0 %}
-            <img class="card-img-top"
+            <img class="card-img"
                src="{% static 'inv/img/'|add:i.item_img %}" alt="Photo of Item">
-            {% else %}<p>A photo of this item does not exist.</p>
+            {% else %}<p class="alert alert-warning text-center">A photo of this item does not exist.</p>
             {% endif %}
-            <h5 class="card-title">{{ i.item_name }}</h5>
+
             <p class="card-text">
             Description: {{ i.item_desc }}<br/>
             Location:
@@ -67,17 +73,14 @@
               {% endfor %}
             </ul>
             {% endif %}
-            <a href="{% url 'item' i.item_id %}" class="btn btn-dark
-                   btn-sm">View</a>
+
             </p>
         </div>
       </div>
     {% endfor %}
   </div>
   {% endif %}
-</main>
+
 </div>
-<div class="clear">
-  <hr/>
-  </div>
+
 {% endblock %}

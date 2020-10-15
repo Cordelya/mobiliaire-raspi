@@ -3,41 +3,59 @@
 
 {% block content %}
 {% load static %}
-<div class="media">
+
+  <div class="row px-5">
+    <div class="col-md-12 p-3 border-bottom border-dark">
+  <div class="media">
+
+  <div class="media-body">
+  <h1>Warehouse: {{ wh.warehouse_name }}</h1>
+  <p class="lead">This warehouse is located at {{ wh.warehouse_loc }}.</p>
+  {% with whid=wh.warehouse_id|slugify  %}
+  <p><a href="{% url 'piCapture' 'wh_'|add:whid %}" target="_blank">Submit a new photo of this warehouse via the Pi Camera.</a></p>
+  {% endwith %}
+</div><!--media-body-->
 <img class="mr-3"
 src="{% static 'inv/img/'|add:wh.warehouse_img %}"
 alt="Photo of warehouse {{ wh.warehouse_id }}"
 caption="Warehouse {{ wh.warehouse_id }} | {{ wh.warehouse_name }}"
 height="300px"/>
-<div class="media-body">
-<h1 class="m1-0">Warehouse: {{ wh.warehouse_name }}</h1>
-<p class="lead">This warehouse is located at {{ wh.warehouse_loc }}.</p>
-{% with whid=wh.warehouse_id|slugify  %}
-<p><a href="{% url 'piCapture' 'wh_'|add:whid %}" target="_blank">Try submitting a new photo of this warehouse via the Pi Camera.</a></p>
-{% endwith %}
-</div>
-</div>
 
-  <div class="row mb-3">
-    {% for b in boxes %}
-        <div class="col-md-4 themed-grid-col">
+</div><!--media-->
+</div><!--col-->
+</div><!--row-->
+
+<div class="row m-3">
+  {% for b in boxes %}
+      <div class="col-md-4 themed-grid-col">
 
 
-      <div class="card mb-4 border-dark">
-        <img class="card-img-top" src="{% static 'inv/img/'|add:b.box_img %}" alt="Box Designator">
-                  <div class="card-body">
-                     <h5 class="card-title">{{ b.box_name }}</h5>
-                     <p class="card-text">There are {{ b.num_items }} items in
-                     this box, valued at ${{ b.val|floatformat:2 }}.</p>
-                     <a href="{% url 'box' b.box_id %}" class="btn btn-dark btn-sm">View</a>
-                  </div>
-      </div>
-    </div>
+    <div class="card mb-4 border-dark">
+      <div class="card-header"><h5 class="card-title">{{ b.box_name }} <a href="{% url 'box' b.box_id %}" class="card-link badge badge-pill badge-primary float-right">View</a></h5>
+      </div><!-- /card-header -->
+      <img class="img card-img-top img-responsive" src="{% static 'inv/img/'|add:b.box_img %}" alt="Box Designator">
+      {% with boxid=b.box_id|slugify  %}
+      <p><a href="{% url 'piCapture' 'box_'|add:boxid %}" target="_blank">Submit a new photo via the Pi Camera.</a></p>
+      {% endwith %}
+        <div class="card-body">
 
-
-
-        {% endfor %}
-  </div>
+        </div><!-- card-body -->
+        <div class="card-footer">
+          {% if b.num_items > 1 %}
+          <p class="card-text">There are {{ b.num_items }} items in
+            this box, valued at ${{ b.val|floatformat:2 }}.</p>
+          {% elif b.num_items == 1 %}
+          <p class="card-text">There is {{ b.num_items }} item in
+            this box, valued at ${{ b.val|floatformat:2 }}.</p>
+          {% else %}
+          <p class="card-text">There are no items in
+            this box.</p>
+          {% endif %}
+        </div><!-- /card-footer -->
+      </div><!-- /card -->
+    </div><!-- /column -->
+      {% endfor %}
+</div><!-- /row -->
 
 
 {% endblock %}
