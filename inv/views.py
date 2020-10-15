@@ -132,6 +132,7 @@ def cameraCapture(request, fileName=None, fname=None):
         fname = fileName + '_' + str(datetime.now()) + '.jpg'
         fname = str(fname)
         camera = PiCamera()
+        camera.rotation = 0 # if the pictures aren't coming out upright, adjust this. Options are 0, 90, 180, and 270.
         camera.start_preview()
         sleep(5)
         camera.capture('/home/pi/Apps/mobiliaire/static/inv/img/new/%s' % fname)
