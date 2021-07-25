@@ -1,6 +1,9 @@
 # Mobiliaire-raspi
 A Raspberry Pi flavored lightweight property inventory helper
 
+## This repository has moved to GitLab. Please visit [Cordelya's GitLab](https://gitlab.com/cordelya) and you'll find the active project there.
+- In addition, this fork has been rolled back into the main Mobiliaire repository and USB webcam support has been added since it moved.
+
 > mobiliaire (n.): Middle French form of "mobiliary"; pertaining to furniture or movable property
 
 Please see the main [Mobiliaire](https://github.com/Cordelya/mobiliaire) repository for information about the application. This page only details the specific features available in this fork.
